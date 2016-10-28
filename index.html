@@ -1,0 +1,46 @@
+   <!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Books</title>
+    <link rel='stylesheet' href='css/bootstrap.min.css' type='text/css' media='all'>
+    <link rel="stylesheet" href="css/main.css">
+    <script src="js/jquery.min.js"></script>
+    <script src="js/handlebars.js"></script>
+     </head>
+  <body>
+      <div class="container">
+         <div class="row header">
+             <h1>Books to read</h1>  
+         </div>
+         <div class="updates">
+         </div>
+         <input type="file" id="files" name="files[]" multiple />
+<!-- <output id="list"></output> -->
+<table id="books"></table>
+<script>
+  data = null;
+
+  function handleFileSelect(evt) {
+    var files = evt.target.files
+    for (var i = 0, f; f = files[i]; i++) {
+      var output = [];
+      var reader = new FileReader();
+      reader.onload = (function(theFile){
+        return function(e){
+          data = JSON.parse(e.target.result);
+          for(var i = 0; i < data.books.length; i++) {
+            output.push('<tr><td>', data.books[i].title, '<td>', data.books[i].author, '<td>', data.books[i].date, '</td></tr>');
+          };
+          document.getElementById('books').innerHTML = output.join('');
+        };
+      })(f);
+      reader.readAsText(f)
+    }
+  }
+  document.getElementById('files').addEventListener('change', handleFileSelect, false);
+</script>
+</div>
+      </div>
+  </body>
+</html> 
